@@ -27,10 +27,6 @@ public class Mahasiswa extends Orang {
         return kelas;
     }
 
-    public void addToKelompok(Kelompok k) {
-        k.addMahasiswa(this);
-    }
-
     public String getStatus() {
         return "Mahasiswa";
     }

@@ -24,7 +24,7 @@ public class Kelompok {
         if (mahasiswa.size() <= 0) {
             System.out.println("Tidak ada data.");
         } else {
-            mahasiswa.remove(i);
+            mahasiswa.remove(i); 
         }
     }
 
