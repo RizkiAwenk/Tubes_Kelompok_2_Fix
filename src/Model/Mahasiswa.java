@@ -1,6 +1,8 @@
-package tubes_sisfogeladi;
+package Model;
 
-public class Mahasiswa extends Orang {
+import java.io.Serializable;
+
+public class Mahasiswa extends Orang implements Serializable {
 
     private long nim;
     private String kelas;

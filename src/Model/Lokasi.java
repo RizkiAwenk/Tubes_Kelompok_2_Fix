@@ -1,8 +1,9 @@
-package tubes_sisfogeladi;
+package Model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Lokasi {
+public class Lokasi implements Serializable {
 
     private Pembimbing pembimbing;
     private ArrayList<Kelompok> kelompok = new ArrayList<>();

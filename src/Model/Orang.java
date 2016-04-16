@@ -1,6 +1,8 @@
-package tubes_sisfogeladi;
+package Model;
 
-public abstract class Orang {
+import java.io.Serializable;
+
+public abstract class Orang implements Serializable {
 
     private String nama;
 

@@ -1,6 +1,8 @@
-package tubes_sisfogeladi;
+package Model;
 
-public class Pembimbing extends Orang {
+import java.io.Serializable;
+
+public class Pembimbing extends Orang implements Serializable{
 
     private long NIP;
 
