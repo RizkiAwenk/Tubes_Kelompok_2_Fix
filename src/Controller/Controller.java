@@ -11,6 +11,7 @@ import java.awt.event.MouseAdapter;
 import Console.Console;
 import Model.Aplikasi;
 import Model.Lokasi;
+import Model.Mahasiswa;
 import Model.Pembimbing;
 import View.*;
 import com.sun.istack.internal.logging.Logger;
@@ -66,6 +67,7 @@ public class Controller extends MouseAdapter implements ActionListener {
         menu4.setVisible(true);
         setComboBoxLokasi(menu4.getComboBox());
         view = menu4;
+        refreshKelompok();
 
     }
 
@@ -75,6 +77,7 @@ public class Controller extends MouseAdapter implements ActionListener {
         menu5.setVisible(true);
         setComboBoxLokasi(menu5.getComboBoxLokasi());
         view = menu5;
+        refreshPembimbing();
 
     }
 
@@ -82,8 +85,13 @@ public class Controller extends MouseAdapter implements ActionListener {
         menu6 = new awal_mahasiswa();
         menu6.addListener(this);
         menu6.setVisible(true);
+        try{
         setComboBoxLokasi(menu6.getComboBoxLokasi());
         setComboBoxKelompok(menu6.getComboBoxKelompok(),menu6.getPilihLokasi());
+        }catch(Exception e){
+            
+        }
+        
         
         view = menu6;
 
@@ -115,6 +123,11 @@ public class Controller extends MouseAdapter implements ActionListener {
            model.InsertLokasi(menu3.getNamaLokasi());
         for (int j = 0; j < model.getDaftarLokasi().size(); j++) {
             menu3.getTable().setValueAt(model.getDaftarLokasi().get(j).getNamaLokasi(), j, 0);
+            try{
+            menu3.getTable().setValueAt(model.getDaftarLokasi().get(j).getPembimbing().getNama(),j,1);
+            }catch(Exception e){
+                            menu3.getTable().setValueAt("Belum di Input",j,1);
+            }
             menu3.getTable().setValueAt(model.getDaftarLokasi().get(j).getJumKelompok(), j, 2);
         }
     }
@@ -152,11 +165,26 @@ public class Controller extends MouseAdapter implements ActionListener {
         }
     }
     public void refreshLokasi(){
-        for (int k = 0; k < model.getDaftarLokasi().size(); k++) {
-            menu3.getTable().getValueAt(k, 0);
-            menu3.getTable().getValueAt(k, 1);
+        for (int j = 0; j < model.getDaftarLokasi().size(); j++) {
+            menu3.getTable().setValueAt(model.getDaftarLokasi().get(j).getNamaLokasi(), j, 0);
+            try{
+            menu3.getTable().setValueAt(model.getDaftarLokasi().get(j).getPembimbing().getNama(),j,1);
+            }catch(Exception e){
+                            menu3.getTable().setValueAt("Belum di Input",j,1);
             }
-    }
+            menu3.getTable().setValueAt(model.getDaftarLokasi().get(j).getJumKelompok(), j, 2);
+        }
+            }
+    
+    public void refreshKelompok(){
+        for (int i = 0; i < model.getDaftarLokasi().size();i++) {
+            for (int j = 0; j < model.getDaftarLokasi().get(i).getJumKelompok(); j++) {
+            String nama = model.getDaftarLokasi().get(i).getKelompok(j).getNamaKel();
+            menu4.getTable().setValueAt(nama, j, 0);
+            int jumlah = model.getDaftarLokasi().get(i).getKelompok(j).getTotal();
+            menu4.getTable().setValueAt(jumlah, j, 1);
+        }
+    }}
 
     public void AddKelompok() {
         model.InsertKelompok(menu4.getPilihLokasi(), menu4.getNamaKelompok());
@@ -193,6 +221,18 @@ public class Controller extends MouseAdapter implements ActionListener {
         } 
            
     }}
+     
+     public void refreshPembimbing(){
+         for (int i = 0; i < model.getDaftarLokasi().size();i++) {
+                 String nama = model.getDaftarPembimbing().get(i).getNama();
+                 menu5.getTable().setValueAt(nama, i, 0);
+                 long nip = model.getDaftarPembimbing().get(i).getNIP();
+                 menu5.getTable().setValueAt(nip, i, 1);
+                 String lokasi = model.getDaftarLokasi().get(i).getNamaLokasi();
+                 menu5.getTable().setValueAt(lokasi, i, 2);
+             
+         }
+     }
      
      public void AddPembimbing(){
          model.addPembimbing(menu5.getNamaPembimbing(),Long.parseLong(menu5.getNipPemimbing()));
@@ -242,9 +282,23 @@ public class Controller extends MouseAdapter implements ActionListener {
             }
         }}
     public void AddMahasiswa() {
-        model.InsertMahasiswa(menu6.getPilihLokasi(), menu6.getPilihKelompok(),menu6.getNamaMahasiswa(), menu6.getNimMahasiswa(), menu6.getKelasMahasiswa());
+        model.addMahasiswa(menu6.getNamaMahasiswa(), Long.parseLong(menu6.getNimMahasiswa()), menu6.getKelasMahasiswa(),menu6.getPilihLokasi(),menu6.getPilihKelompok());
+        String nama = menu6.getNamaMahasiswa();
+        long nim =  Long.parseLong(menu6.getNimMahasiswa());
+        String kelas =  menu6.getKelasMahasiswa();
+        model.InsertMahasiswa(menu6.getPilihLokasi(),menu6.getPilihKelompok(), nama, nim, kelas);
         for (int i = 0; i < model.getDaftarLokasi().size(); i++) {
-            for(int j = 0; j < model.getDaftarLokasi().get(menu6.getPilihLokasi()).getJumKelompok(); i++){
+            for(int j = 0; j < model.getDaftarLokasi().get(i).getJumKelompok(); j++){
+                for (int k = 0; k < model.getDaftarLokasi().get(i).getKelompok(j).getTotal(); k++) {
+                    String namas = model.getDaftarLokasi().get(i).getKelompok(j).getMahasiswa(k).getNama();
+                    long nims = model.getDaftarLokasi().get(i).getKelompok(j).getMahasiswa(k).getNim();
+                    String kelass =model.getDaftarLokasi().get(i).getKelompok(j).getMahasiswa(k).getKelas();
+                    String Kelompok =model.getDaftarLokasi().get(i).getKelompok(j).getNamaKel();
+                    menu6.getTable().setValueAt(namas, k, 0);
+                    menu6.getTable().setValueAt(nims, k, 1);
+                    menu6.getTable().setValueAt(kelass, k, 2);
+                    menu6.getTable().setValueAt(Kelompok, k, 3);
+                }
             
             }
         }
@@ -256,21 +310,46 @@ public class Controller extends MouseAdapter implements ActionListener {
         if (view instanceof masuk) {
             if (source.equals(menu1.getb_masuk())) {
                 menu1.dispose();
-                gotoMenu2();
+                try{
+                                    gotoMenu2();
+
+                }catch(Exception ex){
+                
+                }
             }
         } else if (view instanceof menu_utama) {
             if (source.equals(menu2.getB_Lokasi())) {
                 menu2.dispose();
-                gotoMenu3();
+                try{
+                                    gotoMenu3();
+
+                }catch(Exception ex){
+                
+                }
             } else if (source.equals(menu2.getB_Kelompok())) {
                 menu2.dispose();
-                gotoMenu4();
+                try{
+                                    gotoMenu4();
+
+                }catch(Exception ex){
+                
+                }
             } else if (source.equals(menu2.getB_Pembimbing())) {
                 menu2.dispose();
-                gotoMenu5();
+                try{
+                                    gotoMenu5();
+
+                }catch(Exception ex){
+                
+                }
             } else if (source.equals(menu2.getB_Mahasiswa())) {
                 menu2.dispose();
-                gotoMenu6();
+                try{
+                                   gotoMenu6();
+
+                }catch(Exception ex){
+                
+                }
             } else if (source.equals(menu2.getEXIT())) {
                 menu2.dispose();
                 System.exit(0);
@@ -285,13 +364,13 @@ public class Controller extends MouseAdapter implements ActionListener {
 //                    System.out.println(x);
 //                    menu3.gagal();
 //                }
-                if(menu3.getNamaLokasi().isEmpty()){
-                    menu3.gagal();
-                }else{
+//                if(menu3.getNamaLokasi().isEmpty()){
+//                    menu3.gagal();
+//                }else{
                 AddLokasi();
                 menu3.sukses();
                 menu3.reset();
-                }
+//                }
             } else if (source.equals(menu3.getB_Delete())) {
                 //if(menu3.getNamaLokasi().isEmpty()){
                     //menu3.gagal();
@@ -302,13 +381,13 @@ public class Controller extends MouseAdapter implements ActionListener {
                 
                 //deleteLokasi();
             } else if (source.equals(menu3.getB_search())) {
-                if(menu3.getSearchLokasi().isEmpty()){
-                    menu3.gagal();
-                }else{
+//                if(menu3.getSearchLokasi().isEmpty()){
+//                    menu3.gagal();
+//                }else{
                 searchLokasi();
                 menu3.sukses();
                 menu3.reset();
-                }
+//                }
                 //searchLokasi();
             } else if (source.equals(menu3.getB_Exit())) {
                 menu3.dispose();
@@ -328,31 +407,31 @@ public class Controller extends MouseAdapter implements ActionListener {
             }
         } else if (view instanceof awal_kelompok) {
             if (source.equals(menu4.getB_Add())) {
-                if(menu4.getNamaKelompok().isEmpty()){
-                    menu4.gagal();
-                }else{
+//                if(menu4.getNamaKelompok().isEmpty()){
+//                    menu4.gagal();
+//                }else{
                 AddKelompok();
                 menu4.sukses();
                 menu4.reset();
-                }
+//                }
                 //AddKelompok();
             } else if (source.equals(menu4.getB_Delete())) {
-                if(menu4.getSearchKelompok().isEmpty()){
-                    menu4.gagal();
-                }else{
+//                if(menu4.getSearchKelompok().isEmpty()){
+//                    menu4.gagal();
+//                }else{
                 deleteKelompok();
                 menu4.sukses();
                 menu4.reset();
-                }
+//                }
                 //deleteKelompok();
             } else if (source.equals(menu4.getB_search())) {
-                if(menu4.getSearchKelompok().isEmpty()){
-                    menu4.gagal();
-                }else{
+//                if(menu4.getSearchKelompok().isEmpty()){
+//                    menu4.gagal();
+//                }else{
                 searchKelompok();
                 menu4.sukses();
                 menu4.reset();
-                }
+//                }
                 //searchKelompok();
             } else if (source.equals(menu4.getB_Exit())) {
                 System.exit(0);
@@ -373,30 +452,30 @@ public class Controller extends MouseAdapter implements ActionListener {
 
         } else if (view instanceof awal_pembimbing) {
             if (source.equals(menu5.getB_Add())) {
-                if(menu5.getNamaPembimbing().isEmpty()){
-                    menu5.gagal();
-                }else{
+//                if(menu5.getNamaPembimbing().isEmpty()){
+//                    menu5.gagal();
+//                }else{
                 AddPembimbing();
                 menu5.sukses();
                 menu5.reset();
-                }
+//                }
             //} else if (source.equals(menu5.getB_Add())) {
             } else if (source.equals(menu5.getB_Delete())) {
-                if(menu5.getNamaPembimbing().isEmpty()){
-                    menu5.gagal();
-                }else{
+//                if(menu5.getNamaPembimbing().isEmpty()){
+//                    menu5.gagal();
+//                }else{
                 deletePembimbing();
                 menu5.sukses();
                 menu5.reset();
-                }
+//                }
             } else if (source.equals(menu5.getB_search())) {
-                if(menu5.getSearchPembimbing().isEmpty()){
-                    menu5.gagal();
-                }else{
+//                if(menu5.getSearchPembimbing().isEmpty()){
+//                    menu5.gagal();
+//                }else{
                 searchPembimbing();
                 menu5.sukses();
                 menu5.reset();
-                }
+//                }
             } else if (source.equals(menu5.getB_Exit())) {
                 System.exit(0);
 
@@ -416,9 +495,8 @@ public class Controller extends MouseAdapter implements ActionListener {
 
         } else if (view instanceof awal_mahasiswa) {
             if (source.equals(menu6.getB_Add())) {
-
-            } else if (source.equals(menu6.getB_Add())) {
-
+                AddMahasiswa();
+                menu6.reset();
             } else if (source.equals(menu6.getB_Delete())) {
 
             } else if (source.equals(menu6.getB_search())) {

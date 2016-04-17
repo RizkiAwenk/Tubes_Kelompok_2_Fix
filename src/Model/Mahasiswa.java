@@ -29,9 +29,7 @@ public class Mahasiswa extends Orang implements Serializable {
         return kelas;
     }
 
-    public void addToKelompok(Kelompok k) {
-        k.addMahasiswa(this);
-    }
+   
 
     public String getStatus() {
         return "Mahasiswa";

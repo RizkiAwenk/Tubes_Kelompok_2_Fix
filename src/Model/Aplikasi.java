@@ -44,8 +44,9 @@ public class Aplikasi {
         daftarPembimbing.add(new Pembimbing(nama, nip));
     }
 
-    public void addMahasiswa(String nama, long nim, String kelas) {
-        daftarMahasiswa.add(new Mahasiswa(nama, nim, kelas));
+    public void addMahasiswa(String nama, long nim, String kelas, int lokasi, int kelompok) {
+       daftarMahasiswa.add(new Mahasiswa(nama, nim, kelas));
+       daftarLokasi.get(lokasi).getKelompok(kelompok).addMahasiswa(nama,nim,kelas);
     }
 
     public Mahasiswa getMahasiswaMain(long nim) {
@@ -199,10 +200,10 @@ public class Aplikasi {
                 long NimInsertMahasiswa = x.nextLong();
                 System.out.print("Kelas Mahasiswa: ");
                 String KelasInsertMahasiswa = x.next();
-                addMahasiswa(NamaInsertMahasiswa, NimInsertMahasiswa, KelasInsertMahasiswa);
+                addMahasiswa(NamaInsertMahasiswa, NimInsertMahasiswa, KelasInsertMahasiswa,LokasiInsertMahasiswa,pilMenuInsertMahasiswa);
                 int dasda = daftarMahasiswa.size() - 1;
                 Mahasiswa tempMahasiswaInsertMahasiswa = daftarMahasiswa.get(dasda);
-                InsertMahasiswa(LokasiInsertMahasiswa,pilMenuInsertMahasiswa,tempMahasiswaInsertMahasiswa);
+                InsertMahasiswa(LokasiInsertMahasiswa,pilMenuInsertMahasiswa,NamaInsertMahasiswa,NimInsertMahasiswa,KelasInsertMahasiswa);
 
                 break;
         }
@@ -232,9 +233,9 @@ public class Aplikasi {
          daftarLokasi.get(noLokasiInsertPembimbing).setPembimbing(tempPembimbing);//menu 2
     }
 
-    public void InsertMahasiswa(int LokasiInsertMahasiswa, int pilMenuInsertMahasiswa,Mahasiswa tempMahasiswaInsertMahasiswa) {
+    public void InsertMahasiswa(int LokasiInsertMahasiswa, int pilMenuInsertMahasiswa,String nama, long nim, String kelas) {
         
-        daftarLokasi.get(LokasiInsertMahasiswa).getKelompok(pilMenuInsertMahasiswa).addMahasiswa(tempMahasiswaInsertMahasiswa);
+        daftarLokasi.get(LokasiInsertMahasiswa).getKelompok(pilMenuInsertMahasiswa).addMahasiswa(nama, nim, kelas);
 
     }
 
@@ -710,9 +711,7 @@ public class Aplikasi {
         } while (pilMainMenu != 0);
     }
 
-    public void InsertMahasiswa(int pilihLokasi, int pilihKelompok, String namaMahasiswa, String nimMahasiswa, String kelasMahasiswa) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+   
 
    
 }

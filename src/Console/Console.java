@@ -207,7 +207,7 @@ public class Console {
                 addMahasiswa(NamaInsertMahasiswa, NimInsertMahasiswa, KelasInsertMahasiswa);
                 int dasda = daftarMahasiswa.size() - 1;
                 Mahasiswa tempMahasiswaInsertMahasiswa = daftarMahasiswa.get(dasda);
-                daftarLokasi.get(LokasiInsertMahasiswa).getKelompok(pilMenuInsertMahasiswa).addMahasiswa(tempMahasiswaInsertMahasiswa);
+                daftarLokasi.get(LokasiInsertMahasiswa).getKelompok(pilMenuInsertMahasiswa).addMahasiswa(NamaInsertMahasiswa,NimInsertMahasiswa,KelasInsertMahasiswa);
                 break;
         }
     }

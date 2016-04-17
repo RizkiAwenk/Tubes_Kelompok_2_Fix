@@ -13,11 +13,11 @@ public class Kelompok implements Serializable {
         this.namaKelompok = namaKelompok;
     }
 
-    public void addMahasiswa(Mahasiswa m) {
+    public void addMahasiswa(String nama, long nim, String Kelas) {
         if (mahasiswa.size() == 5) {
             System.out.println("Kelompok sudah penuh!");
         } else {
-            mahasiswa.add(m);
+            mahasiswa.add(new Mahasiswa(nama, nim , Kelas));
         }
     }
 
